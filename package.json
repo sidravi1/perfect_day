@@ -1,0 +1,15 @@
+{
+  "name": "perfect_day",
+  "version": "1.0.0",
+  "description": "first go at the perfect day app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sid Ravinutala",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "path": "^0.12.7"
+  }
+}
