@@ -8,5 +8,9 @@ app.listen(3000, () => {
 });
 
 app.get("/", (require, result) => {
-    result.sendFile(path.resolve(__dirname, "index.html"));
+    result.sendFile(path.resolve(__dirname, "pages/index.html"));
+});
+
+app.get("/about", (require, result) => {
+    result.sendFile(path.resolve(__dirname, "pages/about.html"));
 });
