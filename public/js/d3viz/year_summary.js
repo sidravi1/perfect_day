@@ -12,7 +12,7 @@ const toolDate = d3.timeFormat("%d/%b/%y");
 let svg = d3.select("svg");
 
 const title = "Perfect days";
-const units = " number of goals";
+const units = " goals achieved";
 const breaks = [1, 2, 3, 4];
 const colours = ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e"];
 
@@ -55,9 +55,10 @@ async function drawChart() {
         .enter()
         .append("g")
         .attr("id", (d) => d.key)
-        .attr("transform", function (d, i) {
-            return "translate(0," + (yOffset + i * (height + calY)) + ")";
-        });
+        .attr(
+            "transform",
+            (d, i) => "translate(0," + (yOffset + i * (height + calY)) + ")"
+        );
 
     var labels = cals
         .append("text")
@@ -79,10 +80,7 @@ async function drawChart() {
         })
         .enter()
         .append("rect")
-        .attr("id", function (d) {
-            return "_" + format(d);
-            //return toolDate(d.date)+":\n"+d.value+" dead or missing";
-        })
+        .attr("id", (d) => "_" + format(d))
         .attr("class", "day")
         .attr("width", cellSize)
         .attr("height", cellSize)
@@ -104,9 +102,7 @@ async function drawChart() {
             .append("text")
             .attr("class", "dayLabel")
             .attr("x", xOffset)
-            .attr("y", function (d) {
-                return calY + i * cellSize;
-            })
+            .attr("y", (d) => calY + i * cellSize)
             .attr("dy", "0.9em")
             .text(d);
     });
@@ -119,10 +115,8 @@ async function drawChart() {
         .data((d) => d.value)
         .enter()
         .append("rect")
-        .attr("id", function (d) {
-            return format(d.date) + ":" + d.value;
-        })
-        .attr("stroke", "#ccc")
+        .attr("id", (d) => format(d.date) + ":" + d.value)
+        .attr("stroke", "#fff")
         .attr("width", cellSize)
         .attr("height", cellSize)
         .attr(
@@ -132,21 +126,47 @@ async function drawChart() {
                 calX +
                 d3.timeSunday.count(d3.timeYear(d.date), d.date) * cellSize
         )
-        .attr("y", function (d) {
-            return calY + d.date.getDay() * cellSize;
-        })
+        .attr("y", (d) => calY + d.date.getDay() * cellSize)
         .attr("fill", function (d) {
-            if (d.value < breaks[0]) {
-                return colours[0];
+            if (d.value > 0) {
+                return colours[d.value - 1];
+            } else {
+                return "#eee";
             }
-            for (i = 0; i < breaks.length + 1; i++) {
-                if (d.value >= breaks[i] && d.value < breaks[i + 1]) {
-                    return colours[i];
-                }
-            }
-            if (d.value > breaks.length - 1) {
-                return colours[breaks.length];
-            }
+        })
+        .on("mouseover", function (d) {
+            console.log(d);
+            var sel = d3.select(this);
+            sel.raise()
+                .attr(
+                    "y",
+                    (d) => calY + d.date.getDay() * cellSize - cellSize * 0.1
+                )
+                .attr(
+                    "x",
+                    (d) =>
+                        xOffset +
+                        calX +
+                        d3.timeSunday.count(d3.timeYear(d.date), d.date) *
+                            cellSize -
+                        cellSize * 0.1
+                )
+                .attr("width", (d) => cellSize * 1.2)
+                .attr("height", (d) => cellSize * 1.2);
+        })
+        .on("mouseout", function (d) {
+            d3.select(this)
+                .attr("y", (d) => calY + d.date.getDay() * cellSize)
+                .attr(
+                    "x",
+                    (d) =>
+                        xOffset +
+                        calX +
+                        d3.timeSunday.count(d3.timeYear(d.date), d.date) *
+                            cellSize
+                )
+                .attr("width", (d) => cellSize)
+                .attr("height", (d) => cellSize);
         });
 
     //append a title element to give basic mouseover info
@@ -226,12 +246,8 @@ async function drawChart() {
         .append("rect")
         .attr("width", cellSize)
         .attr("height", cellSize)
-        .attr("x", function (d, i) {
-            return i * 60;
-        })
-        .attr("fill", function (d) {
-            return d;
-        });
+        .attr("x", (d, i) => i * 60)
+        .attr("fill", (d) => d);
 
     key.selectAll("text")
         .data(colours)
@@ -241,9 +257,7 @@ async function drawChart() {
             return cellSize + 5 + i * 60;
         })
         .attr("y", "1em")
-        .text(function (d, i) {
-            return breaks[i];
-        });
+        .text((d, i) => breaks[i]);
 }
 
 function weekOfYear(d) {
