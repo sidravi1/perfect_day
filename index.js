@@ -9,29 +9,23 @@ mongoose.connect("mongodb://0.0.0.0/perfect_day_db", {
     useNewUrlParser: true,
 });
 
-const DayStatus = require("./models/DayStatus");
-
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-
 app.listen(3000, () => {
     console.log("App listening on port 3000");
 });
 
-app.get(["/", "/home"], (require, result) => {
-    result.render("index");
-});
+const homeController = require("./controllers/home");
+app.get(["/", "/home"], homeController);
 
-app.get("/about", (require, result) => {
-    result.render("about");
-});
+const aboutController = require("./controllers/about");
+app.get("/about", aboutController);
 
-app.get("/api/data", (require, result) => {
-    DayStatus.find((err, docs) => {
-        if (!err) {
-            result.json(docs);
-        } else {
-            console.log("Failed to retrieve data");
-        }
-    });
-});
+const dataController = require("./controllers/data");
+app.get("/api/data", dataController);
+
+const registerController = require("./controllers/register");
+app.get("/register", registerController);
+
+const storeUserController = require("./controllers/storeUser");
+app.post("/auth/storeUser", storeUserController);
