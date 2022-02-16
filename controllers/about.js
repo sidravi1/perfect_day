@@ -1,3 +1,3 @@
-module.exports = (require, result) => {
+module.exports = (request, result) => {
     result.render("about");
 };
