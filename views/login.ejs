@@ -22,7 +22,14 @@
                                         </div>
                                     </div>
                                     <% } %>
-
+                                    <% if (registerSuccess) { %>
+                                    <div class="alert alert-success d-flex align-items-center" role="alert">
+                                        <i class="bi bi-check-circle" style="font-size: 2rem; color: green;"></i>
+                                        <div class="ms-4">
+                                            Successfully registered! Please login.
+                                        </div>
+                                    </div>
+                                    <% } %>
                                     <div class="col-md-9 col-lg-6 col-xl-5">
                                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
                                                                                                                                      alt="Sample image">
