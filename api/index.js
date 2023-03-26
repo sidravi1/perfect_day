@@ -1,7 +1,9 @@
 const express = require("express");
 const path = require("path");
+const app = new express(),
+      bodyParser = require("body-parser");
+      port = 3080;
 
-const app = new express();
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const expressSession = require("express-session");
@@ -47,6 +49,17 @@ app.get("/about", aboutController);
 
 const dataController = require("./controllers/data");
 app.get("/api/data", dataController);
+
+app.get('/api/dayStatuses', (req, res) => {
+  console.log('api/dayStatuses')
+  res.json(users);
+});
+
+app.post('/api/dayStatus', (req, res) => {
+  console.log('api/dayStatuses')
+  res.json(users);
+});
+
 
 const registerController = require("./controllers/register");
 app.get("/register", redirectIfAuthenticatedMiddleware, registerController);
